@@ -1,5 +1,44 @@
 {
   "access_key" : "C8Pzub4Cx6Pdxy9LH4cR6xqnVvuHBpw5ualZbyNO",
   "secret_key" : "C2t6MYCG7CBMMo0F2iRBl4EMbiiz9mA5u8dJT5fG",
-  "coin_list" : ["KRW-BTC"]
+  "coin_list" : ["KRW-BTC"],
+  "minutes" : 30,
+  "ask_rule_list" : [
+    {
+      "timing" : "R",
+      "group" : "",
+      "rule_list" : [
+        {
+          "type" : "DMI",
+          "data_set" : {
+            "parser" : "lte"
+          }
+        }
+      ]
+    },
+    {
+      "timing" : "R",
+      "group" : "",
+      "rule_list" : [
+        {
+          "type" : "CriteriaWithClose",
+          "data_set" : {
+            "parser" : "gte",
+            "criteria_number" : -1,
+            "close_number" : -26
+          }
+        },
+        {
+          "type" : "CriteriaWithClose",
+          "data_set" : {
+            "parser" : "lt",
+            "criteria_number" : 0,
+            "close_number" : -25
+          }
+        }
+      ]
+    }
+  ]
+  
+
 }
