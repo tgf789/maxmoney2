@@ -3,6 +3,7 @@
   "secret_key" : "C2t6MYCG7CBMMo0F2iRBl4EMbiiz9mA5u8dJT5fG",
   "coin_list" : ["KRW-BTC"],
   "minutes" : 30,
+  "scheduleMinutes" : 1,
   "ask_rule_list" : [
     {
       "timing" : "R",
@@ -11,7 +12,9 @@
         {
           "type" : "DMI",
           "data_set" : {
-            "parser" : "lte"
+            "parser" : "lte",
+            "adx_period" : 14,
+            "index" : 0
           }
         }
       ]

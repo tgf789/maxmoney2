@@ -1,7 +1,7 @@
 import { ExchangeService, QuoationService } from "node-upbit";
 import Ws from "./module/Ws";
 import "./module/Express"
-import { COIN_LIST } from "./util/constant/setting";
+import { COIN_LIST, MINUTES, SCHEDULE_MINUTES } from "./util/constant/setting";
 import Monitor from "./module/Monitor";
 import { OrderbookResponse } from "./util/constant/interface";
 import schedule from "node-schedule"
@@ -14,7 +14,8 @@ COIN_LIST.forEach((v)=>{
   codes[v] = monitor
 })
 
-const Quoation = new QuoationService()
+// const Quoation = new QuoationService()
+// Quoation.getMinutesCandles({ minutes : "15", marketCoin : "", count : 25})
 
 const handleGetOrderbook = (message : OrderbookResponse) => {
   if(!message) return 
@@ -22,15 +23,24 @@ const handleGetOrderbook = (message : OrderbookResponse) => {
   codes[code].setOrderbook(orderbook_units)
 }
 
+const getCandles = async () => {
+
+  const Quoation = new QuoationService()
+  await COIN_LIST.map(async(code)=>{
+    const candleList = await Quoation.getMinutesCandles({ minutes : MINUTES, marketCoin : "", count : 52})
+
+  })
+}
+
+
 
 const wsConnect = () => {
   ws = new Ws(handleGetOrderbook)
 }
 
-const job = schedule.scheduleJob('0 */1 * * * *', function(){
-  console.log('Time for tea!',new Date().toTimeString());
-  
-});
+// const job = schedule.scheduleJob(`0 */${SCHEDULE_MINUTES} * * * *`,getCandles);
+
+
 
 
 
