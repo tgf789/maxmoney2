@@ -12,3 +12,7 @@ export const SCHEDULE_MINUTES = configFile.scheduleMinutes
 
 // 캔들 기준 분 
 export const MINUTES = (configFile.minutes+"") as "1" | "3" | "5" | "10" | "15" | "30" | "60" | "240"
+
+export const CRITERIA_TO = configFile.criteriaTo
+export const CRITERIA_FROM = configFile.criteriaFrom
+

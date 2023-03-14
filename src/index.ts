@@ -1,7 +1,7 @@
 import { ExchangeService, QuoationService } from "node-upbit";
 import Ws from "./module/Ws";
 import "./module/Express"
-import { COIN_LIST, MINUTES, SCHEDULE_MINUTES } from "./util/constant/setting";
+import { COIN_LIST, CRITERIA_TO, MINUTES, SCHEDULE_MINUTES } from "./util/constant/setting";
 import Monitor from "./module/Monitor";
 import { OrderbookResponse } from "./util/constant/interface";
 import schedule from "node-schedule"
@@ -27,8 +27,8 @@ const getCandles = async () => {
 
   const Quoation = new QuoationService()
   await COIN_LIST.map(async(code)=>{
-    const candleList = await Quoation.getMinutesCandles({ minutes : MINUTES, marketCoin : "", count : 52})
-
+    const candleList = await Quoation.getMinutesCandles({ minutes : MINUTES, marketCoin : "", count : CRITERIA_TO})
+    // codes[code].
   })
 }
 

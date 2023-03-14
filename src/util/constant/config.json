@@ -4,6 +4,8 @@
   "coin_list" : ["KRW-BTC"],
   "minutes" : 30,
   "scheduleMinutes" : 1,
+  "criteriaTo" : 52,
+  "criteriaFrom" : 26,
   "ask_rule_list" : [
     {
       "timing" : "R",

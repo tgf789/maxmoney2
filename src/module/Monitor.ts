@@ -1,8 +1,9 @@
 import { ICandleReturnProps } from "node-upbit/lib/@types/quotation"
 import { RULE } from "../util/constant/Enums"
 import { OrderbookUnit } from "../util/constant/interface"
-import { ASK_RULE_LIST } from "../util/constant/setting"
+import { ASK_RULE_LIST, CRITERIA_FROM, CRITERIA_TO } from "../util/constant/setting"
 import { rulesFn } from "../util/rule"
+import { isThisMinute } from "date-fns"
 
 const REAL_TIME_RULE_LIST_RAW = ASK_RULE_LIST.filter(({timing})=>timing==="R")
 const REAL_TIME_RULE_LIST = REAL_TIME_RULE_LIST_RAW.map((v)=>(monitor:Monitor)=>{
@@ -16,6 +17,7 @@ export default class Monitor {
   private orderbookList : OrderbookUnit[] = []
   private currentPrice = 0
   public candleList : ICandleReturnProps[] = []
+  private criteriaPrice = 0
   constructor(code : string){
     this.code = code 
   }
@@ -30,5 +32,25 @@ export default class Monitor {
     this.currentPrice = price 
     const isNot = REAL_TIME_RULE_LIST.some((fn)=>!fn(this))
     
+  }
+
+  public setCandleList = (candleList : ICandleReturnProps[]) => {
+    candleList.reverse()
+    const {timestamp} = candleList[0]
+    if(isThisMinute(timestamp)){
+      candleList = candleList.slice(1)
+    } 
+    this.candleList = candleList
+    this.getCriteriaPrice(candleList)
+  }
+
+  private getCriteriaPrice = (candleList:ICandleReturnProps[]) =>{
+    const criteriaCandleList = candleList.slice(CRITERIA_FROM-1,CRITERIA_TO)
+    let max = 0, min = 99999999999
+    criteriaCandleList.forEach(({high_price,low_price})=>{
+      if(low_price < min) min = low_price
+      if(high_price > max) max = high_price
+    })
+    this.criteriaPrice = (max + min) / 2
   }
 }
