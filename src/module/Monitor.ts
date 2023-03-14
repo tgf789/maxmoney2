@@ -4,6 +4,7 @@ import { OrderbookUnit } from "../util/constant/interface"
 import { ASK_RULE_LIST, CRITERIA_FROM, CRITERIA_TO } from "../util/constant/setting"
 import { rulesFn } from "../util/rule"
 import { isThisMinute } from "date-fns"
+import * as technicalindicators from "technicalindicators"
 
 const REAL_TIME_RULE_LIST_RAW = ASK_RULE_LIST.filter(({timing})=>timing==="R")
 const REAL_TIME_RULE_LIST = REAL_TIME_RULE_LIST_RAW.map((v)=>(monitor:Monitor)=>{
@@ -51,5 +52,22 @@ export default class Monitor {
       if(high_price > max) max = high_price
     })
     return (max + min) / 2
+  }
+
+  public getDMI = (period:number) => {
+    let close:number[] = [], high:number[] = [],low:number[] = []
+    this.candleList.forEach(({high_price,low_price,trade_price})=>{
+      close.push(trade_price)
+      high.push(high_price)
+      low.push(low_price)
+    })
+    let input = {
+      close,
+      high,
+      low,
+      period : period
+    }
+    if(close.length === 0) return null 
+    return technicalindicators.adx(input)
   }
 }
