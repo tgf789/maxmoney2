@@ -3,9 +3,10 @@
   "secret_key" : "C2t6MYCG7CBMMo0F2iRBl4EMbiiz9mA5u8dJT5fG",
   "coin_list" : ["KRW-BTC"],
   "minutes" : 30,
-  "scheduleMinutes" : 1,
-  "criteriaTo" : 52,
-  "criteriaFrom" : 26,
+  "schedule_minutes" : 1,
+  "criteria_to" : 52,
+  "criteria_from" : 26,
+  "start_money" : 300000,
   "ask_rule_list" : [
     {
       "timing" : "R",
@@ -29,8 +30,8 @@
           "type" : "CriteriaWithClose",
           "data_set" : {
             "parser" : "gte",
-            "criteria_number" : -1,
-            "close_number" : -26
+            "criteria_number" : 1,
+            "close_number" : 26
           }
         },
         {
@@ -38,7 +39,7 @@
           "data_set" : {
             "parser" : "lt",
             "criteria_number" : 0,
-            "close_number" : -25
+            "close_number" : 25
           }
         }
       ]

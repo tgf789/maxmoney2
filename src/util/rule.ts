@@ -21,6 +21,7 @@ export const rulesFn : IRulesFn  = {
       low,
       period : adx_period
     }
+    if(close.length === 0) return false
     console.log({close,high,low})
     const raw = technicalindicators.adx(input)
     console.log({raw})
@@ -29,9 +30,14 @@ export const rulesFn : IRulesFn  = {
     console.log({pdi,mdi})
     return parserResult(pdi,mdi,parser)
   },
-  [RULE.CriteriaWithClose] : () => {
+  [RULE.CriteriaWithClose] : ({monitor,data_set}) => {
+    const {candleList} = monitor
+    const {close_number=0,criteria_number=0,parser} = data_set
+    if(candleList.length === 0) return false 
+    const criteriaPrice = monitor.getCriteriaPrice(criteria_number || 0)
+    const closePrice = candleList[close_number-1].trade_price
 
-    return true
+    return parserResult(closePrice,criteriaPrice,parser)
   }
 }
 

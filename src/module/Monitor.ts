@@ -17,7 +17,7 @@ export default class Monitor {
   private orderbookList : OrderbookUnit[] = []
   private currentPrice = 0
   public candleList : ICandleReturnProps[] = []
-  private criteriaPrice = 0
+  
   constructor(code : string){
     this.code = code 
   }
@@ -41,16 +41,15 @@ export default class Monitor {
       candleList = candleList.slice(1)
     } 
     this.candleList = candleList
-    this.getCriteriaPrice(candleList)
   }
 
-  private getCriteriaPrice = (candleList:ICandleReturnProps[]) =>{
-    const criteriaCandleList = candleList.slice(CRITERIA_FROM-1,CRITERIA_TO)
+  public getCriteriaPrice = (cNumber:number = 0) =>{
+    const criteriaCandleList = this.candleList.slice(CRITERIA_FROM-(1 + cNumber),CRITERIA_TO + cNumber)
     let max = 0, min = 99999999999
     criteriaCandleList.forEach(({high_price,low_price})=>{
       if(low_price < min) min = low_price
       if(high_price > max) max = high_price
     })
-    this.criteriaPrice = (max + min) / 2
+    return (max + min) / 2
   }
 }
